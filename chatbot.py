@@ -240,7 +240,7 @@ def get_response(question):
                 return response.choices[0].message.content
 
             except Exception as e:
-                print("OpenAI API Error:", repr(e))
+                return f"OpenAI Error: {repr(e)}"
 
                 if attempt < 2:
                     time.sleep(2)
