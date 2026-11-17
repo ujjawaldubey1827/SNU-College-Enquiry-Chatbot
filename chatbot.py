@@ -219,40 +219,34 @@ def get_response(question):
     # Unknown question - Ask Gemini AI
     else:
 
-        if client is None:
-            return "Gemini API key is missing. Please configure GEMINI_API_KEY in Streamlit Secrets."
+    if client is None:
+        return "OpenAI API key is missing. Please configure OPENAI_API_KEY."
 
-        for attempt in range(3):
-            try:
-                response = client.chat.completions.create(
-    model="gpt-4.1-mini",
-    messages=[
-        {
-            "role": "system",
-            "content": "You are an AI assistant for Sister Nivedita University. Answer clearly and briefly. If you don't know an official university detail, tell the student to contact SNU."
-        },
-        {
-            "role": "user",
-            "content": question
-        }
-    ]
-)
+    for attempt in range(3):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an AI assistant for Sister Nivedita University. Answer clearly and briefly. If you don't know an official university detail, tell the student to contact SNU."
+                    },
+                    {
+                        "role": "user",
+                        "content": question
+                    }
+                ]
+            )
 
-return response.choices[0].message.content
+            return response.choices[0].message.content
 
-                if response.text:
-                    return response.text
+        except Exception as e:
+            print("OpenAI API Error:", repr(e))
 
-                return "Sorry, I couldn't generate an answer. Please try again."
+            if attempt < 2:
+                time.sleep(2)
 
-            except Exception as e:
-                print("Gemini API Error:", repr(e))
-
-                if attempt < 2:
-                    time.sleep(2)
-
-        return "Sorry, the AI service is temporarily unavailable. Please try again."
-
+    return "Sorry, the AI service is temporarily unavailable. Please try again."
 # 7. Main function to run chatbot
 
 def start_chatbot():
