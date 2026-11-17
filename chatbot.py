@@ -9,7 +9,7 @@ try:
 except Exception:
     api_key = os.getenv("GEMINI_API_KEY")
 
-client = genai.Client(api_key=api_key)
+client = genai.Client(api_key=api_key) if api_key else None
 
 
 # ==========================================
@@ -217,29 +217,41 @@ def get_response(question):
 
         return "You're welcome! Have a great day!"
 
-        # Unknown question
+    # Unknown question - Ask Gemini AI
     else:
-        for _ in range(3):
+
+        if client is None:
+            return "Gemini API key is missing. Please configure GEMINI_API_KEY in Streamlit Secrets."
+
+        for attempt in range(3):
             try:
                 response = client.models.generate_content(
                     model="gemini-3.8-flash",
                     contents=f"""
 You are an AI assistant for Sister Nivedita University.
 
-Answer the student's question clearly and briefly.
+Answer the student's question clearly, accurately and briefly.
+
+If you do not know an official university detail,
+do not invent it. Ask the student to contact SNU.
 
 Student Question:
 {question}
 """
                 )
 
-                return response.text
+                if response.text:
+                    return response.text
+
+                return "Sorry, I couldn't generate an answer. Please try again."
 
             except Exception as e:
-    print("Gemini API Error:", repr(e))
-    time.sleep(2)
+                print("Gemini API Error:", repr(e))
 
-return "Sorry, the AI service is temporarily unavailable. Please try again."
+                if attempt < 2:
+                    time.sleep(2)
+
+        return "Sorry, the AI service is temporarily unavailable. Please try again."
 
 # 7. Main function to run chatbot
 
