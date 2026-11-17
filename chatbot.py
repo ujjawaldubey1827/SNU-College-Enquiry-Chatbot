@@ -1,16 +1,15 @@
 import os
 import time
-from google import genai
+from openai import OpenAI
 import streamlit as st
 
 # Streamlit secrets ya environment variable se API key secure tarike se lena
 try:
-    api_key = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+    api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
 except Exception:
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.getenv("OPENAI_API_KEY")
 
-client = genai.Client(api_key=api_key) if api_key else None
-
+client = OpenAI(api_key=api_key) if api_key else None
 
 # ==========================================
 # SISTER NIVEDITA UNIVERSITY CHATBOT
@@ -225,20 +224,21 @@ def get_response(question):
 
         for attempt in range(3):
             try:
-                response = client.models.generate_content(
-                    model="gemini-3.8-flash",
-                    contents=f"""
-You are an AI assistant for Sister Nivedita University.
+                response = client.chat.completions.create(
+    model="gpt-4.1-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are an AI assistant for Sister Nivedita University. Answer clearly and briefly. If you don't know an official university detail, tell the student to contact SNU."
+        },
+        {
+            "role": "user",
+            "content": question
+        }
+    ]
+)
 
-Answer the student's question clearly, accurately and briefly.
-
-If you do not know an official university detail,
-do not invent it. Ask the student to contact SNU.
-
-Student Question:
-{question}
-"""
-                )
+return response.choices[0].message.content
 
                 if response.text:
                     return response.text
