@@ -240,10 +240,7 @@ Student Question:
                 return response.text
 
             except Exception as e:
-                return str(e)
-
-                if attempt < 2:
-                    time.sleep(2)
+                return f"Gemini Error: {repr(e)}"
 
         return "Sorry, the AI service is temporarily unavailable. Please try again."
 # 7. Main function to run chatbot
