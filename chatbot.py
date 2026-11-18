@@ -10,6 +10,7 @@ except Exception:
     api_key = os.getenv("GEMINI_API_KEY")
 
 client = genai.Client(api_key=api_key) if api_key else None
+st.write("API Key Loaded:", api_key is not None)
 
 # ==========================================
 # SISTER NIVEDITA UNIVERSITY CHATBOT
