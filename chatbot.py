@@ -226,7 +226,7 @@ def get_response(question):
         for attempt in range(3):
             try:
                 response = client.models.generate_content(
-                    model="gemini-1.5-flash",
+                    model="gemini-2.5-flash",
                     contents=f"""
 You are an AI assistant for Sister Nivedita University.
 
@@ -267,3 +267,5 @@ def start_chatbot():
 
 if __name__ == "__main__":
     start_chatbot()
+for model in client.models.list():
+    print(model.name)
