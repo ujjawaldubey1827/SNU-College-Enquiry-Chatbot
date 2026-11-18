@@ -239,11 +239,8 @@ Student Question:
                 )
 
                 return response.text
-
-            except Exception as e:
-                return f"Gemini Error: {repr(e)}"
-
-        return "Sorry, the AI service is temporarily unavailable. Please try again."
+             except Exception as e:
+                 return f"Gemini Error: {e}"
 # 7. Main function to run chatbot
 
 def start_chatbot():
