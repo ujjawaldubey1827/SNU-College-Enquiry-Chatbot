@@ -217,13 +217,13 @@ def get_response(question):
 
         return "You're welcome! Have a great day!"
 
-    # Unknown question - Ask Gemini AI
+        # Unknown question - Ask Gemini AI
     else:
 
         if client is None:
-            return "Gemini API key is missing. Please configure GEMINI_API_KEY."
+            return "Gemini API key is missing. Please configure GOOGLE_API_KEY."
 
-                for attempt in range(3):
+        for attempt in range(3):
             try:
                 response = client.models.generate_content(
                     model="gemini-2.0-flash",
@@ -242,6 +242,8 @@ Student Question:
 
             except Exception as e:
                 return f"Gemini Error: {e}"
+
+        return "Sorry, the AI service is temporarily unavailable. Please try again."
 # 7. Main function to run chatbot
 
 def start_chatbot():
