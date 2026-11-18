@@ -223,7 +223,7 @@ def get_response(question):
         if client is None:
             return "Gemini API key is missing. Please configure GEMINI_API_KEY."
 
-        for attempt in range(3):
+                for attempt in range(3):
             try:
                 response = client.models.generate_content(
                     model="gemini-2.0-flash",
@@ -239,8 +239,9 @@ Student Question:
                 )
 
                 return response.text
-             except Exception as e:
-                 return f"Gemini Error: {e}"
+
+            except Exception as e:
+                return f"Gemini Error: {e}"
 # 7. Main function to run chatbot
 
 def start_chatbot():
