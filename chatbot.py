@@ -204,7 +204,7 @@ def get_response(question):
             "Contact Hours: " + helpline["timing"]
         )
 
-    # Greetings
+        # Greetings
     elif any(word in question for word in
              ["hello", "hi", "hey"]):
 
@@ -215,18 +215,19 @@ def get_response(question):
              ["thank you", "thanks"]):
 
         return "You're welcome! Have a great day!"
-    # Unknown question - Ask OpenAI
+
+    # Unknown question - Ask Gemini AI
     else:
 
         if client is None:
-            return "OpenAI API key is missing. Please configure OPENAI_API_KEY."
+            return "Gemini API key is missing. Please configure GEMINI_API_KEY."
 
         for attempt in range(3):
             try:
                 response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=f"""
-                You are an AI assistant for Sister Nivedita University.
+                    model="gemini-2.0-flash",
+                    contents=f"""
+You are an AI assistant for Sister Nivedita University.
 
 Answer clearly and briefly.
 If you don't know official information, tell the student to contact SNU.
@@ -234,12 +235,12 @@ If you don't know official information, tell the student to contact SNU.
 Student Question:
 {question}
 """
-)
+                )
 
-return response.text
+                return response.text
 
             except Exception as e:
-                return f"OpenAI Error: {repr(e)}"
+                print("Gemini API Error:", repr(e))
 
                 if attempt < 2:
                     time.sleep(2)
