@@ -226,7 +226,7 @@ def get_response(question):
         for attempt in range(3):
             try:
                 response = client.models.generate_content(
-                    model="gemini-2.0-flash",
+                    model="gemini-3.8-flash",
                     contents=f"""
 You are an AI assistant for Sister Nivedita University.
 
