@@ -240,7 +240,7 @@ Student Question:
                 return response.text
 
             except Exception as e:
-                print("Gemini API Error:", repr(e))
+                return str(e)
 
                 if attempt < 2:
                     time.sleep(2)
